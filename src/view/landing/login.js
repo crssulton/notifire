@@ -37,7 +37,7 @@ class login extends Component {
     if (this.state.username === '' || this.state.password === ''){
       swal('Terdapat form kosong.',  { icon:'error' })
     } else {
-      console.log('login')
+      window.location.href = '/';
     }
   }
 
@@ -46,7 +46,7 @@ class login extends Component {
       this.state.username === '' || this.state.password === ''){
       swal('Terdapat form kosong.',  { icon:'error' })
     } else {
-      console.log('register')
+      window.location.href = '/';
     }
   }
 
@@ -64,7 +64,7 @@ class login extends Component {
           <div className="col-lg-6 mb-4">
             <div className="card h-10">
               <h4 className="card-header">Login</h4>
-              <form onSubmit={this.submitLogin}>
+              <form>
                 <div className="card-body">
                   <div className="control-group form-group">
                     <div className="controls">
@@ -80,17 +80,17 @@ class login extends Component {
                     </div>
                   </div>
                 </div>
-                <div className="card-footer text-right">
-                  <button type="submit" className="btn btn-primary">Login</button> 
-                </div>
               </form>
+              <div className="card-footer text-right">
+                <button onClick={this.submitLogin} className="btn btn-primary">Login</button> 
+              </div>
             </div>
           </div>
           <div className="col-lg-6 mb-4">
             <div className="card h-100">
               <h4 className="card-header">Registrasi</h4>
-              <div className="card-body">
-                <form>
+              <form>
+                <div className="card-body">
                   <div className="control-group form-group">
                     <div className="controls">
                       <label>Nama</label>
@@ -125,8 +125,8 @@ class login extends Component {
                       <input type="password" className="form-control" onChange={this.setPassword}/>
                     </div>
                   </div>
-                </form>
-              </div>
+                </div>
+              </form>
               <div className="card-footer text-right">
                 <button className="btn btn-primary" onClick={this.submitRegister}>Register</button>
               </div>
