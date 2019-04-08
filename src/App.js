@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import cookie from 'react-cookies';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 // landing page
 import Header from './view/landing/header';
@@ -11,7 +11,6 @@ import Login from './view/landing/login';
 class App extends Component {
   
   render() {
-    console.log(cookie.load('access')+" "+cookie.load('role')+" "+cookie.load('user_id'));
     let komponen = null;
 
     if((cookie.load('access') === 'undefined' && cookie.load('role') === 'undefined') || (cookie.load('access') === undefined && cookie.load('role') === undefined)){

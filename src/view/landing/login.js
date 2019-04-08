@@ -1,85 +1,143 @@
 import React, { Component } from 'react';
+import swal from 'sweetalert';
+import Spinner from 'react-spinner-material';
 
 class login extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      username    : '',
+      password    : '',
+      nama        : '',
+      cabang      : '',
+      alamat      : '',
+      loading     : true
+    }
+    this.setNama = this.setNama.bind(this)
+    this.setCabang = this.setCabang.bind(this)
+    this.setAlamat = this.setAlamat.bind(this)
+    this.setUsername = this.setUsername.bind(this)
+    this.setPassword = this.setPassword.bind(this)
+    this.submitLogin = this.submitLogin.bind(this)
+    this.submitRegister = this.submitRegister.bind(this)
+    setTimeout(() => {
+      this.setState({
+         loading: false,
+      })
+    }, 1000)
+  }
+
+  setNama(e){ this.setState({ nama: e.target.value }) }
+  setCabang(e){ this.setState({ cabang: e.target.value }) }
+  setAlamat(e){ this.setState({ alamat: e.target.value }) }
+  setUsername(e){ this.setState({ username: e.target.value }) }
+  setPassword(e){ this.setState({ password: e.target.value }) }
+
+  submitLogin(){
+    if (this.state.username === '' || this.state.password === ''){
+      swal('Terdapat form kosong.',  { icon:'error' })
+    } else {
+      console.log('login')
+    }
+  }
+
+  submitRegister(){
+    if (this.state.nama === '' || this.state.cabang === '' || this.state.alamat === '' || 
+      this.state.username === '' || this.state.password === ''){
+      swal('Terdapat form kosong.',  { icon:'error' })
+    } else {
+      console.log('register')
+    }
+  }
+
   render() {
-    return (
-      <div className="container" style={{paddingTop: '30px'}}>
+    let data;
+    if (this.state.loading) {
+      data = 
+      <div className="container" style={{paddingLeft: '50%', paddingRight: '50%', paddingTop: '250px', paddingBottom: '250px'}}>
+        <Spinner size={50} spinnerColor={"#333"} spinnerWidth={2} visible={true} />
+      </div>
+    } else {
+      data = 
+      <div className="container" style={{paddingTop: '40px'}}>
         <div className="row">
           <div className="col-lg-6 mb-4">
-            <div class="card h-10">
-              <h4 class="card-header">Login</h4>
-              <div class="card-body">
-                <form name="sentMessage" id="contactForm" noValidate>
+            <div className="card h-10">
+              <h4 className="card-header">Login</h4>
+              <form onSubmit={this.submitLogin}>
+                <div className="card-body">
                   <div className="control-group form-group">
                     <div className="controls">
                       <label>Username</label>
-                      <input type="text" className="form-control" id="name" required data-validation-required-message="Please enter your username."/>
+                      <input type="text" className="form-control" onChange={this.setUsername}/>
                       <p className="help-block"></p>
                     </div>
                   </div>
                   <div className="control-group form-group">
                     <div className="controls">
                       <label>Password</label>
-                      <input type="password" className="form-control" id="password" required data-validation-required-message="Please enter your password."/>
+                      <input type="password" className="form-control" onChange={this.setPassword}/>
                     </div>
                   </div>
-                  <div id="success"></div>
-                </form>
-              </div>
-              <div class="card-footer">
-                <button type="submit" className="btn btn-primary" id="login">Login</button>
-              </div>
+                </div>
+                <div className="card-footer text-right">
+                  <button type="submit" className="btn btn-primary">Login</button> 
+                </div>
+              </form>
             </div>
           </div>
           <div className="col-lg-6 mb-4">
-            <div class="card h-100">
-              <h4 class="card-header">Registrasi</h4>
-              <div class="card-body">
-                <form name="sentMessage" id="contactForm" noValidate>
+            <div className="card h-100">
+              <h4 className="card-header">Registrasi</h4>
+              <div className="card-body">
+                <form>
                   <div className="control-group form-group">
                     <div className="controls">
                       <label>Nama</label>
-                      <input type="text" className="form-control" id="name" required data-validation-required-message="Please enter your name."/>
+                      <input type="text" className="form-control" onChange={this.setNama}/>
                       <p className="help-block"></p>
                     </div>
                   </div>
                   <div className="control-group form-group">
                     <div className="controls">
                       <label>Cabang</label>
-                      <input type="text" className="form-control" id="cabang" required data-validation-required-message="Please enter your part."/>
+                      <input type="text" className="form-control" onChange={this.setCabang}/>
                       <p className="help-block"></p>
                     </div>
                   </div>
                   <div className="control-group form-group">
                     <div className="controls">
                       <label>Alamat</label>
-                      <textarea className="form-control" id="alamat" required data-validation-required-message="Please enter your address" maxLength="999" style={{resize:'none'}}></textarea>
+                      <textarea className="form-control" onChange={this.setAlamat} maxLength="999" style={{resize:'none'}}></textarea>
                       <p className="help-block"></p>
                     </div>
                   </div>
                   <div className="control-group form-group">
                     <div className="controls">
                       <label>Username</label>
-                      <input type="text" className="form-control" id="username" required data-validation-required-message="Please enter your username."/>
+                      <input type="text" className="form-control" onChange={this.setUsername}/>
                       <p className="help-block"></p>
                     </div>
                   </div>
                   <div className="control-group form-group">
                     <div className="controls">
                       <label>Password</label>
-                      <input type="password" className="form-control" id="password" required data-validation-required-message="Please enter your password."/>
+                      <input type="password" className="form-control" onChange={this.setPassword}/>
                     </div>
                   </div>
-                  <div id="success"></div>
-                  
                 </form>
               </div>
-              <div class="card-footer">
-                <button type="submit" className="btn btn-primary" id="login">Register</button>
+              <div className="card-footer text-right">
+                <button className="btn btn-primary" onClick={this.submitRegister}>Register</button>
               </div>
             </div>
           </div>
         </div>
+      </div>
+    }
+    return (
+      <div>
+        {data}
       </div>
     );
   }
