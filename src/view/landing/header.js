@@ -14,7 +14,7 @@ class header extends Component {
           <div className="collapse navbar-collapse" id="navbarResponsive">
             <ul className="navbar-nav ml-auto">
               <li className="nav-item">
-                <Link className="nav-link" to="login">Login</Link>
+                <Link className="nav-link" to="login"><i class="fa fa-user-circle"></i> Login</Link>
               </li>
             </ul>
           </div>
