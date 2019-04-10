@@ -3,6 +3,7 @@ import swal from 'sweetalert';
 import Spinner from 'react-spinner-material';
 
 class login extends Component {
+  _isMounted = false;
   constructor(props){
     super(props);
     this.state = {
@@ -20,11 +21,19 @@ class login extends Component {
     this.setPassword = this.setPassword.bind(this)
     this.submitLogin = this.submitLogin.bind(this)
     this.submitRegister = this.submitRegister.bind(this)
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
     setTimeout(() => {
       this.setState({
          loading: false,
       })
     }, 1000)
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   setNama(e){ this.setState({ nama: e.target.value }) }

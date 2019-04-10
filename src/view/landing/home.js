@@ -1,21 +1,22 @@
 import React, { Component } from 'react';
 import { Map, GoogleApiWrapper, InfoWindow, Marker } from 'google-maps-react';
 import Spinner from 'react-spinner-material';
+import firebase from 'firebase';
+import api from './../../img/apinya.png';
 
 class home extends Component {
+  _isMounted = false;
   constructor(props){
     super(props);
     this.state = {
-      showingInfoWindow: false,
-      activeMarker  : {},
-      selectedPlace : {},
-      loading       : true
+      dataUser          : [],
+      showingInfoWindow : false,
+      activeMarker      : {},
+      selectedPlace     : {},
+      loading           : true,
     }
-    setTimeout(() => {
-      this.setState({
-         loading: false,
-      })
-    }, 1000)
+    this.dataUser = firebase.database().ref().child("user");
+    this.dataAlat = firebase.database().ref().child("alat");
   }
 
   onMarkerClick = (props, marker, e) =>
@@ -34,12 +35,64 @@ class home extends Component {
     }
   };
 
-  componentWillUnmount (){
-    setTimeout(() => {
-      this.setState({
-         loading: false,
-      })
-    }, 400)
+  componentDidMount() {
+    this._isMounted = true
+    if(this._isMounted){  
+      const self = this
+      self.dataAlat.on('value', isi => {
+        self.dataUser.on('value', snapshot => {
+          var datanya = [];
+          snapshot.forEach(element => {
+              var tampung = [];
+              if(element.val().level === 2){
+                var dataq; var tamdevice = [];
+                dataq               = element.val();
+                dataq['.key']       = element.key;
+  
+                for(var i = 1; i <= dataq.device.jumlah; i++){
+                  if(i === 1){
+                    self.dataAlat.child(dataq.device.device_1).on('value', isi => {
+                      if (isi.val().power === 1){ tamdevice.push(isi.val());}
+                    });
+                  } else if(i === 2){
+                    self.dataAlat.child(dataq.device.device_2).on('value', isi => {
+                      if (isi.val().power === 1){ tamdevice.push(isi.val());}
+                    });
+                  } else if(i === 3){
+                    self.dataAlat.child(dataq.device.device_3).on('value', isi => {
+                      if (isi.val().power === 1){ tamdevice.push(isi.val());}
+                    });
+                  } else if(i === 4){
+                    self.dataAlat.child(dataq.device.device_4).on('value', isi => {
+                      if (isi.val().power === 1){ tamdevice.push(isi.val());}
+                    });
+                  }
+                }
+  
+                tampung['username'] = dataq['.key'];
+                tampung['nama']     = dataq.nama;
+                tampung['level']    = dataq.level;
+                tampung['password'] = dataq.password;
+                tampung['alamat']   = dataq.alamat;
+                tampung['device']   = tamdevice;
+                datanya.push(tampung);
+              }
+          });
+          self.setState({dataUser: datanya});
+        });
+      });
+      setTimeout(() => {
+        this.setState({
+           loading: false,
+        })
+      }, 1000)
+    }
+  }
+
+  componentWillUnmount() {
+    this.dataUser.off();
+    this.dataAlat.off();
+    this._isMounted = false;
   }
 
   render() {
@@ -62,16 +115,45 @@ class home extends Component {
           zoom={9}
           style={style}
           initialCenter={{ lat: -8.5906453, lng: 117.4769463 }}>
-          <Marker
-            onClick={this.onMarkerClick}
-            name={'Lombok Timur'}
-            position={{lat: -8.5906453, lng: 116.4569463}}/>
+          {
+            this.state.dataUser.map((adm) => {
+              return (
+                adm.device.map((isi) => {
+                  if(isi.situasi === 1){
+                    return (
+                      <Marker
+                        onClick={this.onMarkerClick}
+                        name={adm.nama}
+                        title={adm.alamat}
+                        icon= {api}
+                        position={{lat: isi.lokasi.lat, lng: isi.lokasi.long}}/>
+                    )
+                  } else if(isi.situasi === 2){
+                    return (
+                      <Marker
+                        onClick={this.onMarkerClick}
+                        name={adm.nama}
+                        title={adm.alamat}
+                        icon= {api}
+                        animation= {this.props.google.maps.Animation.BOUNCE}
+                        position={{lat: isi.lokasi.lat, lng: isi.lokasi.long}}/>
+                    )
+                  }
+                })
+              )
+            })
+          }
           <InfoWindow
             marker={this.state.activeMarker}
             visible={this.state.showingInfoWindow}
             onClose={this.onClose}>
-            <div>
-              <h4>{this.state.selectedPlace.name}</h4>
+            <div>              
+              <div className="card">
+                <h6 className="card-header">{this.state.selectedPlace.name}</h6>
+                <div className="card-body">
+                  {this.state.selectedPlace.title}
+                </div>
+              </div>
             </div>
           </InfoWindow>
         </Map>

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import cookie from 'react-cookies';
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import firebase from 'firebase';
+import {DB_CONFIG} from './Config';
 
 // landing page
 import Header from './view/landing/header';
@@ -9,6 +11,14 @@ import Home from './view/landing/home';
 import Login from './view/landing/login';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  componentWillMount(){
+    firebase.initializeApp(DB_CONFIG);
+  }
   
   render() {
     let komponen = null;
