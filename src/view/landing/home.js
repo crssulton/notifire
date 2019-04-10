@@ -124,7 +124,7 @@ class home extends Component {
                       <Marker
                         onClick={this.onMarkerClick}
                         name={adm.nama}
-                        title={adm.alamat}
+                        title={isi.alamat}
                         icon= {api}
                         position={{lat: isi.lokasi.lat, lng: isi.lokasi.long}}/>
                     )
@@ -133,7 +133,7 @@ class home extends Component {
                       <Marker
                         onClick={this.onMarkerClick}
                         name={adm.nama}
-                        title={adm.alamat}
+                        title={isi.alamat}
                         icon= {api}
                         animation= {this.props.google.maps.Animation.BOUNCE}
                         position={{lat: isi.lokasi.lat, lng: isi.lokasi.long}}/>
